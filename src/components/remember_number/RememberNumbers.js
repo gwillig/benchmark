@@ -19,6 +19,7 @@ class RememberNumbers extends React.Component{
             displayResult:"none",
             isPlaying:false,
             level:0,
+            prevLevel:0,
             randomNumber:"",
             userInput:"",
             currentState:",",
@@ -72,7 +73,7 @@ class RememberNumbers extends React.Component{
 
             this.setState({
                                 displayResult:"block",currentState:compareResult, displayUserInput:"none",
-                                level:newLevel, note:""
+                                level:newLevel,prevLevel:level
                             }
             )
         }
@@ -90,7 +91,7 @@ class RememberNumbers extends React.Component{
               .then(
                           this.setState({
                                 displayResult:"block",currentState:compareResult, displayUserInput:"none",
-                                level:newLevel, note:""
+                                level:newLevel, prevLevel:level,
                             }
         )
               );
@@ -99,25 +100,38 @@ class RememberNumbers extends React.Component{
 
     render(){
         const {displayStart, isPlaying, displayGame, displayUserInput, randomNumber,currentState,userInput
-              ,displayResult,level} = this.state
+              ,displayResult,level, prevLevel} = this.state
 
 
         return(
             <Container >
-                <Row>
+                <Row className="justify-content-md-center">
                     <Col>
                         <h1>Number Memory</h1>
                     </Col>
                 </Row>
-                <Row id="gameStart" style={{display:displayStart}}>
-                    <Col>
+                <Row className="justify-content-md-center" id="gameStart" style={{display:displayStart}}>
+                    <Col xs="2">
                         <Button onClick={this.startBtn}>Start</Button>
                     </Col>
-                    <Col>
+                    <Col xs="2">
                         <textarea  onChange={this.handleChangeTextarea}>
                         </textarea>
+                        <input list="colors" id="color" name="color"/>
+                            <datalist id="colors">
+                              <option value="#2A81CB">blue</option>
+                              <option value="#FFD326">gold</option>
+                              <option value="#CB2B3E">red</option>
+                              <option value="#2AAD27">green</option>
+                              <option value="#CB8427">orange</option>
+                              <option value="#CAC428">yellow</option>
+                              <option value="#9C2BCB">violet</option>
+                              <option value="#7B7B7B">grey</option>
+                              <option value="#3D3D3D">black</option>
+                            </datalist>
                     </Col>
                 </Row>
+
                 <Row id="game" style={{display:displayGame}}>
                     <Col>
                         <h1>{randomNumber}</h1>
@@ -150,6 +164,7 @@ class RememberNumbers extends React.Component{
                         <h6>Random Number: {randomNumber}</h6>
                         <h6>User Number: {userInput}</h6>
                         <h6>Result: {currentState}</h6>
+                        <h6>Previous Level: {prevLevel}</h6>
 
                     </Col>
                     <Col xs="12">

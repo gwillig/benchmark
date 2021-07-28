@@ -28,7 +28,9 @@ def post_data(request):
     result.save()
     return HttpResponse("Result saved ")
 
-
+def unique_notes(request):
+    result = list(Data.objects.order_by().values_list('note', flat=True).distinct())
+    pass
 
 class Assets(View):
 

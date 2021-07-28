@@ -1,6 +1,10 @@
 import React from 'react'
-import {Container, Row, Col} from 'react-bootstrap';
+import {Container, Row, Col, InputGroup, FormControl} from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-daterangepicker/daterangepicker.css';
+import DateRangePicker from 'react-bootstrap-daterangepicker';
 import { Bar } from 'react-chartjs-2';
+import moment from 'moment';
 
 
 class Charts extends React.Component{
@@ -50,9 +54,43 @@ class Charts extends React.Component{
 
         return(
             <Container>
+                <Row className="mb-3 ">
+                    <Col xs="12">
+                      <DateRangePicker
+                        initialSettings={{
+                          timePicker: true,
+                          startDate: moment().startOf('hour').add(-2, 'hour').toDate(),
+                          endDate: moment().startOf('hour').add(1, 'hour').toDate(),
+                          locale: {
+                            format: 'M/DD hh:mm A',
+                          },
+                        }}
+                      >
+                        <input type="text" className="form-control" />
+                      </DateRangePicker>
+                    </Col>
+                </Row>
                 <Row>
                     <Col>
+                        <InputGroup className="mb-3 ">
+                        <InputGroup.Text id="intervall">@</InputGroup.Text>
+                        <FormControl
+                          placeholder="Username"
+                          aria-label="Username"
+                          aria-describedby="basic-addon1"
+                        />
+                      </InputGroup>
+                    </Col>
+                    <Col>
 
+                        <InputGroup className="mb-3 ">
+                        <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
+                        <FormControl
+                          placeholder="Username"
+                          aria-label="Username"
+                          aria-describedby="basic-addon1"
+                        />
+                      </InputGroup>
                     </Col>
                 </Row>
                 <Row>
