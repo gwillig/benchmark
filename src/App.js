@@ -3,7 +3,7 @@ import './setupProxy'
 import RememberNumbers from "./components/remember_number/RememberNumbers"
 import Charts from './components/Charts/Charts'
 import {Tabs, Tab} from 'react-bootstrap'
-
+import './App.css'
 class App extends Component {
 
 	constructor(props) {
