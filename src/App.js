@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import './setupProxy'
 import RememberNumbers from "./components/remember_number/RememberNumbers"
+import Charts from './components/Charts/Charts'
+import {Tabs, Tab} from 'react-bootstrap'
 
 class App extends Component {
 
@@ -14,7 +16,16 @@ class App extends Component {
 		};
 
 	render(){
-		return(<RememberNumbers></RememberNumbers>)
+		return(
+			<Tabs defaultActiveKey="rememberNumbers" id="uncontrolled-tab-example" className="mb-3">
+			  <Tab eventKey="rememberNumbers" title="Remember Numbers">
+				<RememberNumbers />
+			  </Tab>
+			  <Tab eventKey="charts" title="Charts">
+				<Charts />
+			  </Tab>
+			</Tabs>
+		)
 	}
 }
 export default App;
