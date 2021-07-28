@@ -2,7 +2,7 @@ import React from "react"
 import {Container, Row, Col, Button} from "react-bootstrap"
 import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 import axios from "axios";
-import {POST_RESULTS} from "../BACKEND_URLS";
+import {POST_RESULTS, GET_DISTINCT_NOTE} from "../BACKEND_URLS";
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
@@ -23,12 +23,14 @@ class RememberNumbers extends React.Component{
             randomNumber:"",
             userInput:"",
             currentState:",",
-            note:""
+            note:"",
+            inputOptions:[]
         }
         this.startBtn = this.startBtn.bind(this)
         this.onComplete = this.onComplete.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleChangeTextarea = this.handleChangeTextarea.bind(this)
+        this.get_distinct_notes = this.get_distinct_notes.bind(this)
     }
 
     startBtn=()=>{
@@ -98,11 +100,20 @@ class RememberNumbers extends React.Component{
         }
     }
 
+    get_distinct_notes=()=>{
+       let options
+       axios.get(GET_DISTINCT_NOTE)
+              .then(response=>response.data).then(res =>{
+                  options = res.respone.map(el=>`<option value="${el}">${el}</option>`)
+                  this.setState({inputOptions:res.respone})
+        })
+
+    }
     render(){
         const {displayStart, isPlaying, displayGame, displayUserInput, randomNumber,currentState,userInput
-              ,displayResult,level, prevLevel} = this.state
+              ,displayResult,level, prevLevel,inputOptions} = this.state
 
-
+        this.get_distinct_notes()
         return(
             <Container >
                 <Row className="justify-content-md-center">
@@ -114,20 +125,15 @@ class RememberNumbers extends React.Component{
                     <Col xs="2">
                         <Button onClick={this.startBtn}>Start</Button>
                     </Col>
-                    <Col xs="2">
-                        <textarea  onChange={this.handleChangeTextarea}>
-                        </textarea>
-                        <input list="colors" id="color" name="color"/>
-                            <datalist id="colors">
-                              <option value="#2A81CB">blue</option>
-                              <option value="#FFD326">gold</option>
-                              <option value="#CB2B3E">red</option>
-                              <option value="#2AAD27">green</option>
-                              <option value="#CB8427">orange</option>
-                              <option value="#CAC428">yellow</option>
-                              <option value="#9C2BCB">violet</option>
-                              <option value="#7B7B7B">grey</option>
-                              <option value="#3D3D3D">black</option>
+                    <Col xs="6">
+                        <input style={{width:"300px"}} onChange={this.handleChangeTextarea}
+                               list="notes" id="note" name="note"
+                        />
+                            <datalist id="notes">
+                                {inputOptions.map(
+                                    (opt) => <option key = {opt}>{opt}</option>
+                                )}
+
                             </datalist>
                     </Col>
                 </Row>

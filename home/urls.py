@@ -24,5 +24,6 @@ router.register(r'data', views.DataView, 'data')
 
 urlpatterns = [
     path('api/', include(router.urls)),
-    path('api/post_data',views.post_data, name="postdata")
+    path('api/post_data',views.post_data, name="postdata"),
+    path('api/distinct_notes', views.distinct_notes, name="distinct_note")
 ]

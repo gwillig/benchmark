@@ -5,7 +5,7 @@ from .models import Data
 import json
 from datetime import datetime
 from django.views import View
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 import os
 # The viewsets base class provides the implementation for CRUD operations by default,
 # what we had to do was specify the serializer class and the query set.
@@ -28,9 +28,10 @@ def post_data(request):
     result.save()
     return HttpResponse("Result saved ")
 
-def unique_notes(request):
+def distinct_notes(request):
     result = list(Data.objects.order_by().values_list('note', flat=True).distinct())
-    pass
+
+    return JsonResponse({"respone": result})
 
 class Assets(View):
 
