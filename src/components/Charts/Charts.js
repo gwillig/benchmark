@@ -164,23 +164,20 @@ class Charts extends React.Component{
         return(
             <Container>
                 <Row className="mb-3 ">
-                    <Col xs="12">
-                      <DateRangePicker
-                        initialSettings={{
-                          timePicker: true,
-                          startDate: moment().startOf('hour').add(-2, 'hour').toDate(),
-                          endDate: moment().startOf('hour').add(1, 'hour').toDate(),
-                          locale: {
-                            format: 'M/DD hh:mm A',
-                          },
-                        }}
-                      >
-                        <input type="text" className="form-control" />
-                      </DateRangePicker>
-                    </Col>
-                    <Col xs="12">
-                        <Button onClick={this.fetchData}> Fetch data</Button>
-                    </Col>
+                    {/*<Col xs="12">*/}
+                    {/*  <DateRangePicker*/}
+                    {/*    initialSettings={{*/}
+                    {/*      timePicker: true,*/}
+                    {/*      startDate: moment().startOf('hour').add(-2, 'hour').toDate(),*/}
+                    {/*      endDate: moment().startOf('hour').add(1, 'hour').toDate(),*/}
+                    {/*      locale: {*/}
+                    {/*        format: 'M/DD hh:mm A',*/}
+                    {/*      },*/}
+                    {/*    }}*/}
+                    {/*  >*/}
+                    {/*    <input type="text" className="form-control" />*/}
+                    {/*  </DateRangePicker>*/}
+                    {/*</Col>*/}
                 </Row>
                 <Row>
                     <Col xs="12">
@@ -210,45 +207,17 @@ class Charts extends React.Component{
                         />
                       </InputGroup>
                     </Col>
+                    <Col xs="12">
+                        <Button onClick={this.fetchData}> Fetch data</Button>
+                    </Col>
                 </Row>
                 <Row>
                     {
                         this.renderStats()
                     }
-                    {/*<Table striped bordered hover>*/}
-                    {/*  <thead>*/}
-                    {/*    <tr>*/}
-                    {/*      <th>Count</th>*/}
-                    {/*      <th>Name</th>*/}
-                    {/*      <th>Mean</th>*/}
-                    {/*      <th>Std</th>*/}
-                    {/*      <th>Min</th>*/}
-                    {/*      <th>25%</th>*/}
-                    {/*      <th>75%</th>*/}
-                    {/*      <th>max</th>*/}
-                    {/*    </tr>*/}
-                    {/*  </thead>*/}
-                    {/*  <tbody>*/}
-                    {/*    <tr>*/}
-                    {/*      <td>1</td>*/}
-                    {/*      <td>Mark</td>*/}
-                    {/*      <td>Otto</td>*/}
-                    {/*      <td>@mdo</td>*/}
-                    {/*    </tr>*/}
-                    {/*    <tr>*/}
-                    {/*      <td>2</td>*/}
-                    {/*      <td>Jacob</td>*/}
-                    {/*      <td>Thornton</td>*/}
-                    {/*      <td>@fat</td>*/}
-                    {/*    </tr>*/}
-                    {/*  </tbody>*/}
-                    {/*</Table>*/}
                 </Row>
                 <Row>
                     <Col>
-                            <div className='header'>
-                              <h1 className='title'>MultiType Chart</h1>
-                            </div>
                             {/*Todo: Add bar chart*/}
                             {/*<Bar data={this.createCharts()} />*/}
                     </Col>
