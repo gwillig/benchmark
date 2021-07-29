@@ -3,13 +3,18 @@ import {Container, Row, Col, InputGroup, FormControl, Button, Table} from 'react
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import DateRangePicker from 'react-bootstrap-daterangepicker';
-import { Bar } from 'react-chartjs-2';
+import { Bar, Chart } from 'react-chartjs-2';
 import moment from 'moment';
 import axios from "axios";
 import {GET_DATA_STATS} from "../BACKEND_URLS";
+import zoomPlugin from "chartjs-plugin-zoom";
+
+
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
+
+Chart.register(zoomPlugin); // REGISTER PLUGIN
 
 class Charts extends React.Component{
     constructor(props) {
@@ -27,101 +32,68 @@ class Charts extends React.Component{
     createCharts= () =>{
         //0.Step: Define  variables
         const {stats} = this.state
-
+        const color_palate = ["#003f5c", "#2f4b7c", "#665191", "#a05195", "#d45087", "#f95d6a", "#ff7c43","#ffa600",
+        ,"#4cff00","#ffd500","#ff003b"]
+        const datasets= []
+        let i= 0
         if(Object.keys(stats).length!=0){
                 // 1.Step: Fil histo_dict so that each label has a value
-                return Object.keys(stats).forEach(key=>{
-
-                    /*
-                    *                 for el in range(0,12):
-                    if histo_data.get(el) == None:
-                        histo_data[el] = 0
-                    * */
-                        return (
-                            <Col>
-                                <h6>{key}</h6>
-                                <p>{stats[key]["date"]}</p>
-                                {Object.entries(stats[key].stats.result).map(([itemKey, value])=>{
-                                    return <p>{itemKey}: {value}</p>
-                                })}
-                                <p>{JSON.stringify(stats[key].histo_data)}</p>
-                            </Col>
-                        )
+                debugger
+                Object.keys(stats).forEach(key=>{
+                    datasets.push({
+                      type: 'bar',
+                      label: key,
+                      backgroundColor: color_palate[i],
+                      data: stats[key].histo_data,
+                      borderColor: 'white',
+                      borderWidth: 2,
                     })
+                    i = i + 1
+                    })
+        const options1 = {
+          legend:{display:false},
+          title: {display: true,text: 'Açılan Sandık'},
         }
         const rand = () => Math.round(Math.random() * 20 - 10);
         const data = {
           labels: ['0',"1","2","3","4","5","6","7","8","9","10","11","12","13"],
-          datasets: [
-            {
-              type: 'line',
-              label: 'Dataset 1',
-              borderColor: 'rgb(54, 162, 235)',
-              borderWidth: 2,
-              fill: false,
-              data: [rand(), rand(), rand(), rand(), rand(), rand()],
-            },
-            {
-              type: 'bar',
-              label: 'Dataset 2',
-              backgroundColor: 'rgb(255, 99, 132)',
-              data: [rand(), rand(), rand(), rand(), rand(), rand(), rand()],
-              borderColor: 'white',
-              borderWidth: 2,
-            },
-                          {
-              type: 'bar',
-              label: 'Dataset 2',
-              backgroundColor: 'rgb(255, 99, 132)',
-              data: [rand(), rand(), rand(), rand(), rand(), rand(), rand()],
-              borderColor: 'white',
-              borderWidth: 2,
-            },
-                          {
-              type: 'bar',
-              label: 'Dataset 2',
-              backgroundColor: 'rgb(255, 99, 132)',
-              data: [rand(), rand(), rand(), rand(), rand(), rand(), rand()],
-              borderColor: 'white',
-              borderWidth: 2,
-            },
-                          {
-              type: 'bar',
-              label: 'Dataset 2',
-              backgroundColor: 'rgb(255, 99, 132)',
-              data: [rand(), rand(), rand(), rand(), rand(), rand(), rand()],
-              borderColor: 'white',
-              borderWidth: 2,
-            },
-                          {
-              type: 'bar',
-              label: 'Dataset 2',
-              backgroundColor: 'rgb(255, 99, 132)',
-              data: [rand(), rand(), rand(), rand(), rand(), rand(), rand()],
-              borderColor: 'white',
-              borderWidth: 2,
-            },
-                          {
-              type: 'bar',
-              label: 'Dataset 2',
-              backgroundColor: 'rgb(255, 99, 132)',
-              data: [rand(), rand(), rand(), rand(), rand(), rand(), rand()],
-              borderColor: 'white',
-              borderWidth: 2,
-            },
-            {
-              type: 'bar',
-              label: 'Dataset 3',
-              backgroundColor: 'rgb(75, 192, 192)',
-              data: [rand(), rand(), rand(), rand(), rand(), rand(), rand()],
-            },
-          ],
+          datasets: datasets
         };
-        return data
+
+    return(
+      <Bar
+        data={data}
+        options={{ responsive: true,
+            maintainAspectRatio: false,
+            plugins:{legend:
+                        { labels:
+                                {usePointStyle: true, color: "black"},
+                            position:'top' },
+                        zoom: {
+                                zoom: {
+                                  wheel: {
+                                    enabled: true // SET SCROOL ZOOM TO TRUE
+                                  },
+                                  mode: "xg",
+                                  speed: 100
+                                },
+                                pan: {
+                                  enabled: true,
+                                  mode: "xy",
+                                  speed: 100
+                                }
+
+                        }
+        }}}
+         width={250} height={500}/>
+      );
+
+        }
+
+
     }
 
     fetchData = () =>{
-
         const {start_date, end_date, key_word} = this.state
         fetch(GET_DATA_STATS, {
                                       method: "POST", // or "PUT"
@@ -154,7 +126,7 @@ class Charts extends React.Component{
                                 {Object.entries(stats[key].stats.result).map(([itemKey, value])=>{
                                     return <p>{itemKey}: {value}</p>
                                 })}
-                                <p>{JSON.stringify(stats[key].histo_data)}</p>
+                                <p>{JSON.stringify(stats[key].count)}</p>
                             </Col>
                         )
                     })
@@ -223,7 +195,7 @@ class Charts extends React.Component{
                 <Row>
                     <Col>
                             {/*Todo: Add bar chart*/}
-                            {/*<Bar data={this.createCharts()} />*/}
+                        {this.createCharts()}
                     </Col>
                 </Row>
             </Container>

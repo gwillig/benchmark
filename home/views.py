@@ -62,8 +62,12 @@ def data_stats(request):
                 selectedRows = df.loc[df['note'] == attribute]
                 '#.Step: Prepare data for histogram'
                 histo_data = selectedRows["result"].value_counts().to_dict()
+                for el in range(0,12):
+                    if histo_data.get(el) == None:
+                        histo_data[el] = 0
                 result[attribute] = {"stats": selectedRows[["result"]].describe().fillna(0).round(1).to_dict(),
-                                     "histo_data": histo_data,
+                                     "count": selectedRows["result"].value_counts().to_dict(),
+                                     "histo_data":histo_data,
                                      "date": selectedRows["date"].iloc[0].strftime("%m/%d/%Y, %H:%M:%S")}
     return JsonResponse({"response": result})
 
