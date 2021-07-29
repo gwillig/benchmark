@@ -165,7 +165,7 @@ class Charts extends React.Component{
                         />
                       </InputGroup>
                     </Col>
-                    <Col>
+                    <Col xs="12">
                         <InputGroup className="mb-3 ">
                         <InputGroup.Text id="end_date">End</InputGroup.Text>
                         <FormControl
@@ -174,7 +174,7 @@ class Charts extends React.Component{
                         />
                       </InputGroup>
                     </Col>
-                    <Col>
+                    <Col xs="12">
                         <InputGroup className="mb-3 ">
                         <InputGroup.Text id="key_word">Key Word</InputGroup.Text>
                         <FormControl
