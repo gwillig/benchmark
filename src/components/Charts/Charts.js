@@ -18,7 +18,7 @@ class Charts extends React.Component{
             stats:{},
             key_word:"",
             start_date:"2021-07-27 21:23:54",
-            end_date:"2021-07-28 21:59:54"
+            end_date:"2021-12-28 21:59:54"
         }
         this.createCharts = this.createCharts.bind(this)
         this.fetchData = this.fetchData.bind(this)
