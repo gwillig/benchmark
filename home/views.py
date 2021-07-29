@@ -7,6 +7,9 @@ from datetime import datetime
 from django.views import View
 from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 import os
+from django.db import connection
+import pandas as pd
+
 # The viewsets base class provides the implementation for CRUD operations by default,
 # what we had to do was specify the serializer class and the query set.
 
@@ -28,10 +31,36 @@ def post_data(request):
     result.save()
     return HttpResponse("Result saved ")
 
+
 def distinct_notes(request):
     result = list(Data.objects.order_by().values_list('note', flat=True).distinct())
 
-    return JsonResponse({"respone": result})
+    return JsonResponse({"response": result})
+
+
+def data_stats(request):
+    '#1.Step: Get parameters'
+    parameters = json.loads(request.body)
+    '#2.Step: Execute query'
+    query = f"SELECT * FROM home_data WHERE date BETWEEN '{parameters['start_date']}' AND '{parameters['end_date']}'"
+    df = pd.read_sql_query(query, connection)
+    result = {}
+    if parameters["key_word"]!="":
+        attribute = parameters["key_word"]
+        selectedRows = df.loc[df['note'] == attribute]
+        result[attribute] = {"stats": selectedRows[["result"]].describe().fillna(0).round(1).to_dict(),
+                             "histo_data": selectedRows["result"].value_counts().to_dict(),
+                             "date": selectedRows["date"].iloc[0].strftime("%m/%d/%Y, %H:%M:%S")}
+    else:
+        for attribute in df["note"].unique():
+
+            if attribute not in [""]:
+                selectedRows = df.loc[df['note'] == attribute]
+                result[attribute] = {"stats": selectedRows[["result"]].describe().fillna(0).round(1).to_dict(),
+                                     "histo_data": selectedRows["result"].value_counts().to_dict(),
+                                     "date": selectedRows["date"].iloc[0].strftime("%m/%d/%Y, %H:%M:%S")}
+    return JsonResponse({"response": result})
+
 
 class Assets(View):
 

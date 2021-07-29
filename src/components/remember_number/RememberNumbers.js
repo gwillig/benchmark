@@ -104,8 +104,8 @@ class RememberNumbers extends React.Component{
        let options
        axios.get(GET_DISTINCT_NOTE)
               .then(response=>response.data).then(res =>{
-                  options = res.respone.map(el=>`<option value="${el}">${el}</option>`)
-                  this.setState({inputOptions:res.respone})
+                  options = res.response.map(el=>`<option value="${el}">${el}</option>`)
+                  this.setState({inputOptions:res.response})
         })
 
     }

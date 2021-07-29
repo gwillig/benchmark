@@ -1,24 +1,53 @@
 import React from 'react'
-import {Container, Row, Col, InputGroup, FormControl} from 'react-bootstrap';
+import {Container, Row, Col, InputGroup, FormControl, Button, Table} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import DateRangePicker from 'react-bootstrap-daterangepicker';
 import { Bar } from 'react-chartjs-2';
 import moment from 'moment';
+import axios from "axios";
+import {GET_DATA_STATS} from "../BACKEND_URLS";
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 
 class Charts extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-
+            stats:{},
+            key_word:"",
+            start_date:"2021-07-27 21:23:54",
+            end_date:"2021-07-28 21:59:54"
         }
         this.createCharts = this.createCharts.bind(this)
+        this.fetchData = this.fetchData.bind(this)
+        this.renderStats = this.renderStats.bind(this)
     }
     createCharts= () =>{
+        //0.Step: Define  variables
+        const {stats} = this.state
+
+        if(Object.keys(stats).length!=0){
+                // 1.Step: Fil histo_dict so that each label has a value
+                return Object.keys(stats).forEach(key=>{
+
+
+                        return (
+                            <Col>
+                                <h6>{key}</h6>
+                                <p>{stats[key]["date"]}</p>
+                                {Object.entries(stats[key].stats.result).map(([itemKey, value])=>{
+                                    return <p>{itemKey}: {value}</p>
+                                })}
+                                <p>{JSON.stringify(stats[key].histo_data)}</p>
+                            </Col>
+                        )
+                    })
+        }
         const rand = () => Math.round(Math.random() * 20 - 10);
         const data = {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+          labels: ['0',"1","2","3","4","5","6","7","8","9","10","11","12","13"],
           datasets: [
             {
               type: 'line',
@@ -36,6 +65,46 @@ class Charts extends React.Component{
               borderColor: 'white',
               borderWidth: 2,
             },
+                          {
+              type: 'bar',
+              label: 'Dataset 2',
+              backgroundColor: 'rgb(255, 99, 132)',
+              data: [rand(), rand(), rand(), rand(), rand(), rand(), rand()],
+              borderColor: 'white',
+              borderWidth: 2,
+            },
+                          {
+              type: 'bar',
+              label: 'Dataset 2',
+              backgroundColor: 'rgb(255, 99, 132)',
+              data: [rand(), rand(), rand(), rand(), rand(), rand(), rand()],
+              borderColor: 'white',
+              borderWidth: 2,
+            },
+                          {
+              type: 'bar',
+              label: 'Dataset 2',
+              backgroundColor: 'rgb(255, 99, 132)',
+              data: [rand(), rand(), rand(), rand(), rand(), rand(), rand()],
+              borderColor: 'white',
+              borderWidth: 2,
+            },
+                          {
+              type: 'bar',
+              label: 'Dataset 2',
+              backgroundColor: 'rgb(255, 99, 132)',
+              data: [rand(), rand(), rand(), rand(), rand(), rand(), rand()],
+              borderColor: 'white',
+              borderWidth: 2,
+            },
+                          {
+              type: 'bar',
+              label: 'Dataset 2',
+              backgroundColor: 'rgb(255, 99, 132)',
+              data: [rand(), rand(), rand(), rand(), rand(), rand(), rand()],
+              borderColor: 'white',
+              borderWidth: 2,
+            },
             {
               type: 'bar',
               label: 'Dataset 3',
@@ -44,13 +113,53 @@ class Charts extends React.Component{
             },
           ],
         };
-
         return data
     }
+
+    fetchData = () =>{
+
+        const {start_date, end_date, key_word} = this.state
+        fetch(GET_DATA_STATS, {
+                                      method: "POST", // or "PUT"
+                                      headers: {
+                                        "Content-Type": "application/json",
+                                      },
+                                      body: JSON.stringify({
+                                          start_date:start_date,
+                                          end_date:end_date, key_word:key_word}
+                                      ),
+                                    }).then(response => response.json()).then(data =>{
+                                        debugger
+                                        this.setState({stats:data.response})
+        } )
+    }
+
+    renderStats= () =>{
+
+        const {stats} = this.state
+
+        if(Object.keys(stats).length!=0){
+                debugger
+                return Object.keys(stats).map(key=>{
+
+
+                        return (
+                            <Col>
+                                <h6>{key}</h6>
+                                <p>{stats[key]["date"]}</p>
+                                {Object.entries(stats[key].stats.result).map(([itemKey, value])=>{
+                                    return <p>{itemKey}: {value}</p>
+                                })}
+                                <p>{JSON.stringify(stats[key].histo_data)}</p>
+                            </Col>
+                        )
+                    })
+        }
+    }
+
     render(){
 
-
-
+        const {stats, start_date, end_date, key_word} = this.state
 
         return(
             <Container>
@@ -69,36 +178,79 @@ class Charts extends React.Component{
                         <input type="text" className="form-control" />
                       </DateRangePicker>
                     </Col>
+                    <Col xs="12">
+                        <Button onClick={this.fetchData}> Fetch data</Button>
+                    </Col>
                 </Row>
                 <Row>
-                    <Col>
+                    <Col xs="12">
                         <InputGroup className="mb-3 ">
-                        <InputGroup.Text id="intervall">@</InputGroup.Text>
+                        <InputGroup.Text id="start_date">Start</InputGroup.Text>
                         <FormControl
-                          placeholder="Username"
-                          aria-label="Username"
-                          aria-describedby="basic-addon1"
+                          onChange={event => this.setState({start_date: event.target.value})}
+                          defaultValue={start_date}
                         />
                       </InputGroup>
                     </Col>
                     <Col>
-
                         <InputGroup className="mb-3 ">
-                        <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
+                        <InputGroup.Text id="end_date">End</InputGroup.Text>
                         <FormControl
-                          placeholder="Username"
-                          aria-label="Username"
-                          aria-describedby="basic-addon1"
+                            onChange={event => this.setState({end_date: event.target.value})}
+                            defaultValue={end_date}
                         />
                       </InputGroup>
                     </Col>
+                    <Col>
+                        <InputGroup className="mb-3 ">
+                        <InputGroup.Text id="key_word">Key Word</InputGroup.Text>
+                        <FormControl
+                            onChange={event => this.setState({key_word: event.target.value})}
+                            defaultValue={key_word}
+                        />
+                      </InputGroup>
+                    </Col>
+                </Row>
+                <Row>
+                    {
+                        this.renderStats()
+                    }
+                    {/*<Table striped bordered hover>*/}
+                    {/*  <thead>*/}
+                    {/*    <tr>*/}
+                    {/*      <th>Count</th>*/}
+                    {/*      <th>Name</th>*/}
+                    {/*      <th>Mean</th>*/}
+                    {/*      <th>Std</th>*/}
+                    {/*      <th>Min</th>*/}
+                    {/*      <th>25%</th>*/}
+                    {/*      <th>75%</th>*/}
+                    {/*      <th>max</th>*/}
+                    {/*    </tr>*/}
+                    {/*  </thead>*/}
+                    {/*  <tbody>*/}
+                    {/*    <tr>*/}
+                    {/*      <td>1</td>*/}
+                    {/*      <td>Mark</td>*/}
+                    {/*      <td>Otto</td>*/}
+                    {/*      <td>@mdo</td>*/}
+                    {/*    </tr>*/}
+                    {/*    <tr>*/}
+                    {/*      <td>2</td>*/}
+                    {/*      <td>Jacob</td>*/}
+                    {/*      <td>Thornton</td>*/}
+                    {/*      <td>@fat</td>*/}
+                    {/*    </tr>*/}
+                    {/*  </tbody>*/}
+                    {/*</Table>*/}
                 </Row>
                 <Row>
                     <Col>
                             <div className='header'>
                               <h1 className='title'>MultiType Chart</h1>
                             </div>
-                            <Bar data={this.createCharts()} />
+                            {/*Todo: Add bar chart*/}
+                            {/*<Bar data={this.createCharts()} />*/}
                     </Col>
                 </Row>
             </Container>
