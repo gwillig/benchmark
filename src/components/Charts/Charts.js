@@ -32,7 +32,11 @@ class Charts extends React.Component{
                 // 1.Step: Fil histo_dict so that each label has a value
                 return Object.keys(stats).forEach(key=>{
 
-
+                    /*
+                    *                 for el in range(0,12):
+                    if histo_data.get(el) == None:
+                        histo_data[el] = 0
+                    * */
                         return (
                             <Col>
                                 <h6>{key}</h6>

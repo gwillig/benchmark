@@ -42,8 +42,11 @@ def data_stats(request):
     '#1.Step: Get parameters'
     parameters = json.loads(request.body)
     '#2.Step: Execute query'
-    query = f"SELECT * FROM home_data WHERE date BETWEEN '{parameters['start_date']}' AND '{parameters['end_date']}'"
-    df = pd.read_sql_query(query, connection)
+    query = f"SELECT * FROM home_data WHERE date BETWEEN '{parameters['start_date']}' AND '{parameters['end_date']}'ORDER BY date"
+    df_raw = pd.read_sql_query(query, connection)
+    df = df_raw.sort_values(by=['date'], ascending=False)
+    '#.Step: Change float to integer for histogram'
+    df = df.astype({'result': 'int'})
     result = {}
     if parameters["key_word"]!="":
         attribute = parameters["key_word"]
@@ -55,9 +58,12 @@ def data_stats(request):
         for attribute in df["note"].unique():
 
             if attribute not in [""]:
+                '#.Step: Select rows'
                 selectedRows = df.loc[df['note'] == attribute]
+                '#.Step: Prepare data for histogram'
+                histo_data = selectedRows["result"].value_counts().to_dict()
                 result[attribute] = {"stats": selectedRows[["result"]].describe().fillna(0).round(1).to_dict(),
-                                     "histo_data": selectedRows["result"].value_counts().to_dict(),
+                                     "histo_data": histo_data,
                                      "date": selectedRows["date"].iloc[0].strftime("%m/%d/%Y, %H:%M:%S")}
     return JsonResponse({"response": result})
 
