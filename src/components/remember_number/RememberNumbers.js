@@ -13,7 +13,7 @@ class RememberNumbers extends React.Component{
         this.state={
             counter:0,
             data:"",
-            displayStart:"block",
+            displayStart:"flex",
             displayGame:"none",
             displayUserInput:"none",
             displayResult:"none",
@@ -122,36 +122,39 @@ class RememberNumbers extends React.Component{
 
 
         return(
-            <Container >
-                <Row className="justify-content-md-center">
-                    <Col>
+            <Container className="h-100">
+                  <Row className="justify-content-center ">
+                    <Col  xs="10" >
                         <h1>Number Memory</h1>
                     </Col>
-                </Row>
-                <Row className="justify-content-md-center" id="gameStart" style={{display:displayStart}}>
-                    <Col xs="6">
-                        <input style={{width:"300px"}} onChange={this.handleChangeTextarea}
+                  </Row>
+                  <Row className="justify-content-center m-4">
+                    <Col xs="12">
+                        <input style={{width:"100%"}} onChange={this.handleChangeTextarea}
                                list="notes" id="note" name="note"
                         />
-                            <datalist id="notes">
+                        <datalist id="notes">
                                 {inputOptions.map(
                                     (opt) => <option key = {opt}>{opt}</option>
                                 )}
-
                             </datalist>
                     </Col>
-                    <Col justify-content-md-center xs="2" className="centerElement">
+                  </Row>
+                  <Row className="justify-content-center h-100">
+                    <Col  xs="10" >
                         <Button className="start_btn" onClick={this.startBtn}>Start</Button>
                     </Col>
-                </Row>
 
-                <Row id="game"   style={{display:displayGame, marginLeft:"60px", marginTop:"200px"}}>
+                  </Row>
+
+
+                <Row id="game"  className="justify-content-center h-100" >
                     <Col>
                         <h1 className="randomNumber">{randomNumber}</h1>
                           <CountdownCircleTimer
                             onComplete= {this.onComplete}
                             isPlaying={isPlaying}
-                            duration={7}
+                            duration={}
                             colors={[
                               ['#004777', 0.33],
                               ['#F7B801', 0.33],
@@ -165,11 +168,11 @@ class RememberNumbers extends React.Component{
                 </Row>
                 <Row className="mb-3" id="userInput" style={{display:displayUserInput}} >
                     <Col xs="12">
-                        <input value={this.state.userInput} style={{marginLeft:"60px", marginTop:"150px"}}
+                        <input value={this.state.userInput} style={{}}
                                onChange={this.handleChange}/>
                     </Col>
                     <Col xs="12">
-                        <Button  style={{marginLeft:"60px", marginTop:"15px"}}
+                        <Button  style={{}}
                                  className="start_btn" onClick={this.onSubmit}>Submit</Button>
                     </Col>
                 </Row>

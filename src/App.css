@@ -1,4 +1,7 @@
+html, body, #root {height: 100%}
+
 .start_btn {
+    width:100%;
     padding: 12px 30px;
     background: rgb(255, 209, 84);
     display: inline-block;
@@ -14,12 +17,8 @@
     text-decoration: none !important;
 }
 
-.centerElement{
-    margin-left: 120px;
-    margin-top: 150px;
-}
 
 .randomNumber{
-    margin-left: 6px;
+
     font-size: 40px;
 }

@@ -17,8 +17,8 @@ class App extends Component {
 
 	render(){
 		return(
-			<Tabs defaultActiveKey="rememberNumbers" id="uncontrolled-tab-example" className="mb-3">
-			  <Tab eventKey="rememberNumbers" title="Remember Numbers">
+			<Tabs defaultActiveKey="rememberNumbers" className="mb-3">
+			  <Tab eventKey="rememberNumbers" title="Remember Numbers" className="h-100">
 				<RememberNumbers />
 			  </Tab>
 			  <Tab eventKey="charts" title="Charts">
