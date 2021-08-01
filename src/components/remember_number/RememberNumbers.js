@@ -184,6 +184,7 @@ class RememberNumbers extends React.Component{
                         <h6>Result: {currentState}</h6>
                         <h6>Previous Level: {prevLevel}</h6>
 
+
                     </Col>
                     <Col xs="12">
                         <Button onClick={this.startBtn}>Next Round</Button>
