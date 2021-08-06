@@ -128,8 +128,7 @@ class RememberNumbers extends React.Component{
         }
     }
     createCountdown = () =>{
-        let {displayNewGame, isPlaying, displayGame, displayUserInput, randomNumber,currentState,userInput
-              ,displayResult,level, prevLevel,inputOptions, countDownTimer } = this.state
+        let {isPlaying, countDownTimer } = this.state
 
         return(
              <CountdownCircleTimer style={{width:"100%"}}
@@ -155,15 +154,15 @@ class RememberNumbers extends React.Component{
 
 
         return(
-            <Container fluid className="p-0">
+                <Container id="RememberNumberContainer" fluid className=" ">
                 <Row className="justify-content-md-center">
                   <Col>
-                      <h1>Number Memory</h1>
+                      <h1 className="text-center" >Number Memory</h1>
                   </Col>
                 </Row>
-                <Row  id="newGame" className="justify-content-md-center" className={displayNewGame}>
-                    <Col md="auto"  >
-                        <Card style={{ width: '22rem' }} className="text-center" >
+                <Row  id="newGame" className="" className={displayNewGame}>
+                    <div className="mx-auto d-block"  >
+                        <Card  className="text-center" style={{ width: '22rem' }} className="text-center" >
                           <Card.Body>
                           <Card.Title>New Game</Card.Title>
                               <input style={{width:"100%"}} onChange={this.handleChangeTextarea}
@@ -180,7 +179,7 @@ class RememberNumbers extends React.Component{
                             <Button style={{width:"100%"}} className="start_btn" onClick={this.startBtn}>Start</Button>
                           </Card.Body>
                         </Card>
-                    </Col>
+                    </div>
                   </Row>
                 <Row  id="rememberNumberGame" className="justify-content-md-center" className={displayGame}>
                     <Col md="auto"  >
@@ -229,7 +228,6 @@ class RememberNumbers extends React.Component{
                     </Col>
                   </Row>
                 </Container>
-
         )
     }
 }
