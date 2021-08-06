@@ -1,7 +1,8 @@
 import React from "react"
-import {Container, Row, Col, Button} from "react-bootstrap"
+import {Container, Row, Col, Button, Card} from "react-bootstrap"
 import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 import axios from "axios";
+import "./RememberNumbers.css"
 import {POST_RESULTS, GET_DISTINCT_NOTE} from "../BACKEND_URLS";
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
@@ -13,10 +14,10 @@ class RememberNumbers extends React.Component{
         this.state={
             counter:0,
             data:"",
-            displayStart:"block",
-            displayGame:"none",
-            displayUserInput:"none",
-            displayResult:"none",
+            displayNewGame:"",
+            displayGame:"d-none",
+            displayUserInput:"d-none",
+            displayResult:"d-none",
             isPlaying:false,
             level:0,
             prevLevel:0,
@@ -24,6 +25,7 @@ class RememberNumbers extends React.Component{
             userInput:"",
             currentState:",",
             note:"",
+            countDownTimer:1,
             inputOptions:[]
         }
         this.startBtn = this.startBtn.bind(this)
@@ -43,14 +45,14 @@ class RememberNumbers extends React.Component{
             number +=randomNumber
         }
 
-        this.setState({displayStart:"none", isPlaying:true, displayGame:"block",randomNumber:number,displayResult:"none",
+        this.setState({displayNewGame:"d-none", isPlaying:true, displayGame:"",randomNumber:number,displayResult:"d-none",
                             userInput:""})
 
     }
 
     onComplete = ()=>{
         console.log("Count down finished")
-        this.setState({displayUserInput:"block",displayGame:"none",isPlaying:false})
+        this.setState({displayUserInput:"",displayGame:"d-none",isPlaying:false})
         return["shouldRepeat"]
     }
 
@@ -63,6 +65,7 @@ class RememberNumbers extends React.Component{
         this.setState({note: event.target.value});
 
     }
+
     onSubmit = () => {
         const {userInput,randomNumber,level, note} = this.state
 
@@ -74,7 +77,7 @@ class RememberNumbers extends React.Component{
             newLevel = level + 1
 
             this.setState({
-                                displayResult:"block",currentState:compareResult, displayUserInput:"none",
+                                displayResult:"",currentState:compareResult, displayUserInput:"d-none",
                                 level:newLevel,prevLevel:level
                             }
             )
@@ -92,7 +95,7 @@ class RememberNumbers extends React.Component{
             axios.post(POST_RESULTS, item)
               .then(
                           this.setState({
-                                displayResult:"block",currentState:compareResult, displayUserInput:"none",
+                                displayResult:"",currentState:compareResult, displayUserInput:"d-none",
                                 level:newLevel, prevLevel:level,
                             }
         )
@@ -117,76 +120,98 @@ class RememberNumbers extends React.Component{
     }
 
     render(){
-        const {displayStart, isPlaying, displayGame, displayUserInput, randomNumber,currentState,userInput
-              ,displayResult,level, prevLevel,inputOptions} = this.state
+        const {displayNewGame, isPlaying, displayGame, displayUserInput, randomNumber,currentState,userInput
+              ,displayResult,level, prevLevel,inputOptions, countDownTimer } = this.state
 
 
         return(
-            <Container >
+            <Container fluid>
                 <Row className="justify-content-md-center">
-                    <Col>
-                        <h1>Number Memory</h1>
-                    </Col>
+                  <Col>
+                      <h1>Number Memory</h1>
+                  </Col>
                 </Row>
-                <Row className="justify-content-md-center" id="gameStart" style={{display:displayStart}}>
-                    <Col xs="6">
-                        <input style={{width:"300px"}} onChange={this.handleChangeTextarea}
-                               list="notes" id="note" name="note"
-                        />
-                            <datalist id="notes">
-                                {inputOptions.map(
-                                    (opt) => <option key = {opt}>{opt}</option>
-                                )}
+                <Row  id="newGame" className="justify-content-md-center" className={displayNewGame}>
+                    <Col md="auto"  >
+                        <Card style={{ width: '22rem' }} className="text-center" >
+                          <Card.Body>
+                          <Card.Title>New Game</Card.Title>
+                              <input style={{width:"100%"}} onChange={this.handleChangeTextarea}
+                                   list="notes" id="note" name="note"
+                            />
+                                <datalist id="notes">
+                                    {inputOptions.map(
+                                        (opt) => <option key = {opt}>{opt}</option>
+                                    )}
 
-                            </datalist>
+                                </datalist>
+                          </Card.Body>
+                          <Card.Body>
+                            <Button style={{width:"100%"}} className="start_btn" onClick={this.startBtn}>Start</Button>
+                          </Card.Body>
+                        </Card>
                     </Col>
-                    <Col justify-content-md-center xs="2" className="centerElement">
-                        <Button className="start_btn" onClick={this.startBtn}>Start</Button>
-                    </Col>
-                </Row>
+                  </Row>
+                <Row  id="rememberNumberGame" className="justify-content-md-center" className={displayGame}>
+                    <Col md="auto"  >
+                        <Card style={{ width: '22rem' }}  className="text-center">
+                          <Card.Body>
+                              <Card.Title>{randomNumber}</Card.Title>
+                              <CountdownCircleTimer style={{width:"100%"}}
+                                onComplete= {this.onComplete}
+                                isPlaying={isPlaying}
+                                duration={countDownTimer}
+                                colors={[
+                                  ['#004777', 0.33],
+                                  ['#F7B801', 0.33],
+                                  ['#A30000', 0.33],
+                                ]}
+                              >
+                                {({ remainingTime }) => remainingTime}
 
-                <Row id="game"   style={{display:displayGame, marginLeft:"60px", marginTop:"200px"}}>
-                    <Col>
-                        <h1 className="randomNumber">{randomNumber}</h1>
-                          <CountdownCircleTimer
-                            onComplete= {this.onComplete}
-                            isPlaying={isPlaying}
-                            duration={7}
-                            colors={[
-                              ['#004777', 0.33],
-                              ['#F7B801', 0.33],
-                              ['#A30000', 0.33],
-                            ]}
-                          >
-                            {({ remainingTime }) => remainingTime}
-
-                          </CountdownCircleTimer>
+                              </CountdownCircleTimer>
+                          </Card.Body>
+                        </Card>
                     </Col>
-                </Row>
-                <Row className="mb-3" id="userInput" style={{display:displayUserInput}} >
-                    <Col xs="12">
-                        <input value={this.state.userInput} style={{marginLeft:"60px", marginTop:"150px"}}
+                  </Row>
+                <Row  id="rememberNumberUserInput" className="justify-content-md-center" className={displayUserInput}>
+                    <Col md="auto"  >
+                        <Card style={{ width: '22rem' }}  className="text-center">
+                          <Card.Body>
+                              <Card.Title>Please enter number</Card.Title>
+                              <input value={this.state.userInput} style={{width:"100%"}}
                                onChange={this.handleChange}/>
+                          </Card.Body>
+                          <Card.Body>
+                              <Button  style={{width:"100%"}}
+                                 className="start_btn" onClick={this.onSubmit}>
+                                 Submit
+                             </Button>
+                          </Card.Body>
+                        </Card>
                     </Col>
-                    <Col xs="12">
-                        <Button  style={{marginLeft:"60px", marginTop:"15px"}}
-                                 className="start_btn" onClick={this.onSubmit}>Submit</Button>
+                  </Row>
+                <Row  id="rememberNumberResult" className="justify-content-md-center" className={displayResult}>
+                    <Col md="auto"  >
+                        <Card style={{ width: '22rem' }}  className="text-center">
+                          <Card.Body>
+                              <Card.Title>Result of level {level}</Card.Title>
+                                <h6>Random Number: {randomNumber}</h6>
+                                <h6>User Number: {userInput}</h6>
+                                <h6>Result: {currentState}</h6>
+                                <h6>Previous Level: {prevLevel}</h6>
+                          </Card.Body>
+                          <Card.Body>
+                              <Button  style={{width:"100%"}}
+                                 className="start_btn" onClick={this.startBtn}>
+                                 Next Round
+                             </Button>
+                          </Card.Body>
+                        </Card>
                     </Col>
-                </Row>
-                <Row className="centerElement" id="result" style={{display:displayResult}}>
-                    <Col xs="12">
-                        <h5>Level: {level}</h5>
-                        <h6>Random Number: {randomNumber}</h6>
-                        <h6>User Number: {userInput}</h6>
-                        <h6>Result: {currentState}</h6>
-                        <h6>Previous Level: {prevLevel}</h6>
+                  </Row>
+                </Container>
 
-                    </Col>
-                    <Col xs="12">
-                        <Button onClick={this.startBtn}>Next Round</Button>
-                    </Col>
-                </Row>
-            </Container>
         )
     }
 }
