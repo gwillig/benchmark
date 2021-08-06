@@ -1,3 +1,46 @@
 [aria-label="Countdown timer"] {
   margin:auto;
 }
+
+.start_btn {
+    padding: 12px 30px;
+    background-color:#004085 !important;
+    border-color:#004085 !important;
+    display: inline-block;
+    border: none;
+    border-radius: 3px;
+    transition: background 0.1s linear 0s;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: inherit;
+    font-family: inherit;
+    line-height: inherit;
+    color: white !important;
+    text-decoration: none !important;
+}
+.start_btn:hover {
+
+    padding: 12px 30px;
+    background-color:rgba(125, 164, 212, 0.84) !important;
+    border-color:rgba(125, 164, 212, 0.84) !important;
+    display: inline-block;
+    border: none;
+    border-radius: 3px;
+    transition: background 0.1s linear 0s;
+    cursor: pointer;
+    font-size: inherit;
+    font-family: inherit;
+    line-height: inherit;
+    color: #322d2d !important;
+    text-decoration: none !important;
+}
+
+.centerElement{
+    margin-left: 120px;
+    margin-top: 150px;
+}
+
+.randomNumber{
+    margin-left: 6px;
+    font-size: 40px;
+}

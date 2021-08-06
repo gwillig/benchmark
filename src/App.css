@@ -1,25 +1,4 @@
-.start_btn {
-    padding: 12px 30px;
-    background: rgb(255, 209, 84);
-    display: inline-block;
-    border: none;
-    border-radius: 3px;
-    transition: background 0.1s linear 0s;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: inherit;
-    font-family: inherit;
-    line-height: inherit;
-    color: rgb(51, 51, 51) !important;
-    text-decoration: none !important;
-}
 
-.centerElement{
-    margin-left: 120px;
-    margin-top: 150px;
-}
-
-.randomNumber{
-    margin-left: 6px;
-    font-size: 40px;
+body{
+    background-color: rgba(0,0,0,.03);
 }
