@@ -25,7 +25,8 @@ class RememberNumbers extends React.Component{
             userInput:"",
             currentState:",",
             note:"",
-            countDownTimer:1,
+            countDownTimer:2,
+            timePerLevel:2,
             inputOptions:[]
         }
         this.startBtn = this.startBtn.bind(this)
@@ -33,10 +34,11 @@ class RememberNumbers extends React.Component{
         this.handleChange = this.handleChange.bind(this)
         this.handleChangeTextarea = this.handleChangeTextarea.bind(this)
         this.get_distinct_notes = this.get_distinct_notes.bind(this)
+        this.createCountdown = this.createCountdown.bind(this)
     }
 
     startBtn=()=>{
-        const {level} = this.state
+        const {level, timePerLevel} = this.state
         //1.Step: Create random number based on level
         let number=""
         for (let i=0;i<=level; i++){
@@ -44,16 +46,23 @@ class RememberNumbers extends React.Component{
             console.log(randomNumber)
             number +=randomNumber
         }
-
+        //2.Step: Calculate the countdown time
+         let countDownTimer= level*timePerLevel
+         if (countDownTimer == 0){
+             countDownTimer = 2
+         }
+         debugger
+        //3.Step: Set the state of the component
         this.setState({displayNewGame:"d-none", isPlaying:true, displayGame:"",randomNumber:number,displayResult:"d-none",
-                            userInput:""})
+                            userInput:"", countDownTimer:countDownTimer})
 
     }
 
     onComplete = ()=>{
         console.log("Count down finished")
-        this.setState({displayUserInput:"",displayGame:"d-none",isPlaying:false})
-        return["shouldRepeat"]
+        // this.setState({displayUserInput:"",displayGame:"d-none",isPlaying:false})
+        this.setState({displayUserInput:"",displayGame:"",isPlaying:false})
+        return [true, 1 ]
     }
 
     handleChange(event) {
@@ -118,7 +127,28 @@ class RememberNumbers extends React.Component{
             this.get_distinct_notes()
         }
     }
+    createCountdown = () =>{
+        let {displayNewGame, isPlaying, displayGame, displayUserInput, randomNumber,currentState,userInput
+              ,displayResult,level, prevLevel,inputOptions, countDownTimer } = this.state
 
+        return(
+             <CountdownCircleTimer style={{width:"100%"}}
+                                onComplete= {this.onComplete}
+                                isPlaying={isPlaying}
+                                key = {`CountdownCircleTimer_${countDownTimer}`}
+                                duration={countDownTimer}
+                                colors={[
+                                  ['#004777', 0.33],
+                                  ['#F7B801', 0.33],
+                                  ['#A30000', 0.33],
+                                ]}
+                              >
+                                {({ remainingTime }) => remainingTime}
+
+                              </CountdownCircleTimer>
+        )
+
+    }
     render(){
         const {displayNewGame, isPlaying, displayGame, displayUserInput, randomNumber,currentState,userInput
               ,displayResult,level, prevLevel,inputOptions, countDownTimer } = this.state
@@ -157,19 +187,7 @@ class RememberNumbers extends React.Component{
                         <Card style={{ width: '22rem' }}  className="text-center">
                           <Card.Body>
                               <Card.Title>{randomNumber}</Card.Title>
-                              <CountdownCircleTimer style={{width:"100%"}}
-                                onComplete= {this.onComplete}
-                                isPlaying={isPlaying}
-                                duration={countDownTimer}
-                                colors={[
-                                  ['#004777', 0.33],
-                                  ['#F7B801', 0.33],
-                                  ['#A30000', 0.33],
-                                ]}
-                              >
-                                {({ remainingTime }) => remainingTime}
-
-                              </CountdownCircleTimer>
+                              {this.createCountdown()}
                           </Card.Body>
                         </Card>
                     </Col>
