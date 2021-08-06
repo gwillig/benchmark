@@ -125,7 +125,7 @@ class RememberNumbers extends React.Component{
 
 
         return(
-            <Container fluid>
+            <Container fluid className="p-0">
                 <Row className="justify-content-md-center">
                   <Col>
                       <h1>Number Memory</h1>
