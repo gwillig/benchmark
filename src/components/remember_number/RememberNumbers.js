@@ -60,8 +60,7 @@ class RememberNumbers extends React.Component{
 
     onComplete = ()=>{
         console.log("Count down finished")
-        // this.setState({displayUserInput:"",displayGame:"d-none",isPlaying:false})
-        this.setState({displayUserInput:"",displayGame:"",isPlaying:false})
+        this.setState({displayUserInput:"",displayGame:"d-none",isPlaying:false})
         return [true, 1 ]
     }
 
