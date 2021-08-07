@@ -244,6 +244,7 @@ class RememberNumbers extends React.Component{
                                           onChange={(event)=>this.handleInputField(event,"music")}
                                     />
                                     <datalist id="musicList">
+                                      <option value="none">none</option>
                                       <option value="focus">focus</option>
                                       <option value="podcast">podcast</option>
                                       <option value="lofi">lofi</option>
