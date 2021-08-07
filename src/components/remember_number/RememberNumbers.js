@@ -154,12 +154,13 @@ class RememberNumbers extends React.Component{
 
 
         return(
-                <Container id="RememberNumberContainer" fluid className=" ">
+                <Container id="RememberNumberContainer" fluid className="align-middle">
                 <Row className="justify-content-md-center">
                   <Col>
                       <h1 className="text-center" >Number Memory</h1>
                   </Col>
                 </Row>
+
                 <Row  id="newGame" className="" className={displayNewGame}>
                     <div className="mx-auto d-block"  >
                         <Card  className="text-center" style={{ width: '22rem' }} className="text-center" >
@@ -181,8 +182,8 @@ class RememberNumbers extends React.Component{
                         </Card>
                     </div>
                   </Row>
-                <Row  id="rememberNumberGame" className="justify-content-md-center" className={displayGame}>
-                    <Col md="auto"  >
+                <Row  id="rememberNumberGame" className={`justify-content-md-center  align-self-center ${displayGame}`}>
+                    <Col className="d-flex justify-content-center mx-auto" >
                         <Card style={{ width: '22rem' }}  className="text-center">
                           <Card.Body>
                               <Card.Title>{randomNumber}</Card.Title>
