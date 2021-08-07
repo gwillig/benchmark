@@ -264,6 +264,7 @@ class RememberNumbers extends React.Component{
                                       <option value="walking">walking</option>
                                       <option value="mb">mb</option>
                                       <option value="game">game</option>
+                                      <option value="talking">talking</option>
                                     </datalist>
                               </div>
                               <input className="inputField" style={{width:"100%"}} onChange={this.handleChangeTextarea}
