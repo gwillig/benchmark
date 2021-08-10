@@ -27,7 +27,11 @@ urlpatterns = [
     path('', include('home.urls')),
     path('', TemplateView.as_view(template_name='index.html')),
     # Links for pwa
+    path(r'index.html', (TemplateView.as_view(template_name="index.html", content_type='application/html', )),
+        name='index.html'),
     path('static/', TemplateView.as_view(template_name='index.html')),
+    path(r'sw.js', (TemplateView.as_view(template_name="sw.js", content_type='application/javascript', )),
+        name='sw.js'),
     path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('img/favicon.ico'))),
     path('manifest.json', RedirectView.as_view(url=staticfiles_storage.url('manifest.json'))),
     path('static/logo192.png', RedirectView.as_view(url=staticfiles_storage.url('img/logo192.png'))),
