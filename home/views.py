@@ -57,15 +57,13 @@ def data_stats(request):
                              "histo_data": selectedRows["result"].value_counts().to_dict(),
                              "date": selectedRows["date"].iloc[0].strftime("%m/%d/%Y, %H:%M:%S")}
     else:
-        i=0
-        for attribute in df["date_round_hours"].unique():
-            print(i)
-
+        'Selected rows based on rounded hour and note'
+        for attribute in df["note"].unique():
             if attribute not in [""]:
-                '#.Step: Select rows'
-                selectedRows = df.loc[df['date_round_hours'] == attribute]
-                if selectedRows["note"].iloc[0] == "earlyMorning; silent; LightMeal; 7:30; none; None":
-                    print("hello")
+                '1#.Step: Select rows'
+                selectedRowsRaw = df.loc[df['note'] == attribute]
+                date_round = selectedRowsRaw["date_round_hours"].iloc[0]
+                selectedRows = df.loc[(df['note'] == attribute) & (df['date_round_hours'] == date_round)]
                 '#.Step: Prepare data for histogram'
                 histo_data = selectedRows["result"].value_counts().to_dict()
                 for el in range(0,12):
@@ -77,7 +75,6 @@ def data_stats(request):
                                      "count": selectedRows["result"].value_counts().to_dict(),
                                      "histo_data":histo_data,
                                      "date": date}
-                i = i +1
     return JsonResponse({"response": result})
 
 
