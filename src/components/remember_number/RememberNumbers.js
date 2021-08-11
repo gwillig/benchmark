@@ -287,7 +287,7 @@ class RememberNumbers extends React.Component{
                     <Col className="d-flex justify-content-center mx-auto" >
                         <Card style={{ width: '22rem' }}  className="text-center">
                           <Card.Body>
-                              <Card.Title>{randomNumber}</Card.Title>
+                              <Card.Title style={{fontSize:"50px"}} >{randomNumber}</Card.Title>
                               {this.createCountdown()}
                           </Card.Body>
                         </Card>
